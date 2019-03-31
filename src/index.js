@@ -5,6 +5,7 @@ import * as helpers from './helpers'
 import ga from 'directives/ga'
 import { autotracking as expectionAutotracking } from 'lib/exception'
 import vuexMiddleware from './vuex-middleware'
+import eventsTrackingmiddleware from './eventsTrackingmiddleware'
 
 export default function install (Vue, options = {}) {
   update({ ...options, $vue: Vue })
@@ -15,6 +16,9 @@ export default function install (Vue, options = {}) {
   expectionAutotracking(Vue)
   bootstrap()
 }
+
+// Events Tracking middleware
+export const eventsTrackingmiddleware = eventsTrackingmiddleware
 
 // Vuex middleware
 export const analyticsMiddleware = vuexMiddleware
