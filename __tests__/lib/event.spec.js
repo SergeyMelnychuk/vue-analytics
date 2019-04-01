@@ -13,7 +13,6 @@ beforeEach(() => {
   })
 
   $vm = new Vue({})
-
   $vm.$mount()
 })
 

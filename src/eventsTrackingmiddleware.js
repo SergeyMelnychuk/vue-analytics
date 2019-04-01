@@ -1,5 +1,4 @@
 import { event } from './lib'
-
 /**
  * This tracking code detects specific actions happening within our web application
  * and triggers tracking to GTM, this sort of tracking should really be configured
@@ -25,7 +24,7 @@ function normalizeMiddleware(fn) {
  * event to fire if an event of the given type is fired on an element matching the selector
  * @param {(object|function)[]} middleware an array of middleware handlers that are chain invoked in order to build the final event
  */
-const createTracker = middleware => ({ selector, eventType = 'click', trackingEvent } = {}) => {
+export default (middleware = [{ event: 'trackEvent' }]) => ({ selector, eventType = 'click', trackingEvent } = {}) => {
 
     // create a normalized middleware array
     const normalizedMiddleware = [...middleware, trackingEvent].map(fn => normalizeMiddleware(fn));
@@ -34,19 +33,13 @@ const createTracker = middleware => ({ selector, eventType = 'click', trackingEv
 
         const element = e.target.closest(selector);
 
-        if (element == null) return;
+        if (!element) return;
 
         // run each middleware stage
         const trackingEvent = normalizedMiddleware.reduce((trackingEvent, fn) => fn(trackingEvent, e, element), {});
 
-        if (trackingEvent == null) return;
+        if (!trackingEvent) return;
 
         event(trackingEvent);
     });
-
 };
-
-// element based tracking events
-const baseInteractionEvent = { event: 'trackEvent' };
-
-export default createTracker([baseInteractionEvent]);
